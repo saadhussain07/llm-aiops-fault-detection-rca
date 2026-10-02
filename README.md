@@ -5,6 +5,8 @@ An LLM agent that detects faults in a Kubernetes microservice system, explains t
 - the 330 recorded monitoring cycles it produced;
 - every experiment, measurement and analysis script behind the findings.
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23107449.svg)](https://doi.org/10.5281/zenodo.23107449)
+
 > **Manuscript:** *LLM-based fault detection and root-cause analysis for Kubernetes: a pre-registered evaluation of what the model contributes.* M. S. Hussain and A. Farrukh, 2026. Under review.
 
 ---
