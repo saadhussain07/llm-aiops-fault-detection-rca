@@ -1,0 +1,24 @@
+﻿# ---------------------------------------------------------------------------
+# Python 3.13
+#
+# Versions below are pinned to the versions used in the experiments.
+# Install with:  pip install -r requirements.txt
+# ---------------------------------------------------------------------------
+
+# --- Telemetry collection -------------------------------------------------
+prometheus-api-client==0.7.2   # Prometheus PromQL queries (metric_collector)
+requests==2.32.3               # Jaeger + Loki REST/LogQL queries
+
+# --- Anomaly detection ----------------------------------------------------
+scikit-learn==1.3.2            # Isolation Forest
+drain3==0.9.11                 # Log template mining
+
+# --- LLM agent ------------------------------------------------------------
+groq==0.11.0                   # Groq API client (openai/gpt-oss-120b)
+python-dotenv==1.0.1           # Credential management
+
+# --- Numerics, analysis, figures -----------------------------------------
+numpy==1.26.4
+pandas==2.2.2
+scipy==1.13.1                  # t-tests, point-biserial correlation
+matplotlib==3.9.0              # Calibration reliability diagram (Figure 3)

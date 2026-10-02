@@ -1,0 +1,65 @@
+# loadgenerator.yaml
+#
+# Minimal load generator for the microservices-demo app, specifically
+# to drive traffic through cartservice (gRPC, port 7070) via
+# frontend's HTTP interface -- needed because S4's network-latency
+# fault (tc netem on cartservice's eth0) produces ZERO measurable
+# effect without real request traffic flowing through it.
+#
+# Confirmed via Jaeger API: cartservice had 0 total traces before this
+# was deployed (curl "http://localhost:16686/api/traces?service=cartservice"
+# returned {"data":[],"total":0}) -- no loadgenerator was ever deployed
+# in this cluster, so nothing was calling cartservice at all.
+#
+# Since cartservice itself is gRPC (per the paper, port 7070), this
+# generates traffic via frontend's HTTP interface instead -- viewing
+# products and adding them to cart, which internally calls cartservice
+# over gRPC. This exercises the exact call path S4's fault targets.
+#
+# Usage:
+#   kubectl apply -f loadgenerator.yaml
+#   kubectl get pods -n microservices-demo -l app=loadgenerator
+#
+# To stop generating load (e.g. between experiment scenarios):
+#   kubectl delete -f loadgenerator.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loadgenerator
+  namespace: microservices-demo
+  labels:
+    app: loadgenerator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: loadgenerator
+  template:
+    metadata:
+      labels:
+        app: loadgenerator
+    spec:
+      containers:
+        - name: loadgenerator
+          image: curlimages/curl:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              echo "Load generator starting, targeting frontend..."
+              while true; do
+                curl -s -o /dev/null -w "GET / -> %{http_code}\n" http://frontend:80/ || true
+                curl -s -o /dev/null -w "GET /product/OLJCESPC7Z -> %{http_code}\n" http://frontend:80/product/OLJCESPC7Z || true
+                curl -s -o /dev/null -w "POST /cart -> %{http_code}\n" \
+                  -X POST http://frontend:80/cart \
+                  -d "product_id=OLJCESPC7Z&quantity=1" || true
+                curl -s -o /dev/null -w "GET /cart -> %{http_code}\n" http://frontend:80/cart || true
+                sleep 1
+              done
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi

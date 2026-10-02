@@ -1,0 +1,70 @@
+# ---------------------------------------------------------------------------
+# Kind cluster configuration
+#
+# Reproduces the testbed described in Section 5.1 of the paper:
+# a two-node cluster (one control-plane, one worker) running Kubernetes
+# v1.32.2, hosted on Windows 11 / WSL2 with 6 GB allocated to Docker Desktop.
+#
+# Create with:
+#   kind create cluster --name new-cluster --config deploy/kind-config.yaml
+#
+# Verify:
+#   kubectl get nodes
+#   kubectl version --short
+# ---------------------------------------------------------------------------
+
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: new-cluster
+
+nodes:
+  # -------------------------------------------------------------------------
+  # Control plane. Also hosts the ingress-style port mappings so the
+  # observability stack and the demo frontend can be reached from the host
+  # without an additional kubectl port-forward.
+  # -------------------------------------------------------------------------
+  - role: control-plane
+    image: kindest/node:v1.32.2
+    kubeadmConfigPatches:
+      - |
+        kind: InitConfiguration
+        nodeRegistration:
+          kubeletExtraArgs:
+            node-labels: "ingress-ready=true"
+    extraPortMappings:
+      # Online Boutique frontend
+      - containerPort: 30080
+        hostPort: 8080
+        protocol: TCP
+      # Prometheus
+      - containerPort: 30090
+        hostPort: 9090
+        protocol: TCP
+      # Loki
+      - containerPort: 30100
+        hostPort: 3100
+        protocol: TCP
+      # Jaeger query UI
+      - containerPort: 30686
+        hostPort: 16686
+        protocol: TCP
+
+  # -------------------------------------------------------------------------
+  # Worker. Application microservices are scheduled here, keeping workload
+  # CPU and memory pressure separate from control-plane components so that
+  # injected faults register cleanly in per-service metrics.
+  # -------------------------------------------------------------------------
+  - role: worker
+    image: kindest/node:v1.32.2
+
+# ---------------------------------------------------------------------------
+# Networking
+#
+# Default CNI and kube-proxy are retained. The pod and service subnets below
+# are Kind's defaults, stated explicitly so the topology is reproducible.
+# ---------------------------------------------------------------------------
+networking:
+  podSubnet: "10.244.0.0/16"
+  serviceSubnet: "10.96.0.0/12"
+  apiServerAddress: "127.0.0.1"
+  apiServerPort: 6443
