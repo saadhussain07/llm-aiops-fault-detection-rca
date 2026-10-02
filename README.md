@@ -21,15 +21,23 @@ Several figures in the source study's version 1.0 do not reproduce. The correcte
 
 ## Pre-registration
 
-The protocol and Amendments 1–3 were committed before the analyses they govern. Amendment 4 records a deviation after the fact: only one of two planned raters took part. The commits were made in a private working repository that also holds unrelated drafts. `protocol/REGISTRATION_LOG.txt` lists them with full hashes and times. The repository itself is available to editors on request.
+The protocol and Amendments 1–3 were committed before the analyses they govern. Amendment 4 records a deviation after the fact: only one of two planned raters took part.
 
 | File | Content |
 | --- | --- |
-| `protocol/FGCS_V2_PROTOCOL.md` | E1–E3, outcomes, reporting rules |
-| `protocol/FGCS_V2_AMENDMENT_1.md` | Third model; primary and sensitivity ground truth |
-| `protocol/FGCS_V2_AMENDMENT_2.md` | Rule-based root-cause scoring; bootstrap and multiplicity |
-| `protocol/FGCS_V2_AMENDMENT_3.md` | Non-LLM baselines |
-| `protocol/FGCS_V2_AMENDMENT_4.md` | Single rater (written after the rating) |
+| `protocol/PROTOCOL.md` | E1–E3, outcomes, reporting rules |
+| `protocol/AMENDMENT_1.md` | Third model; primary and sensitivity ground truth |
+| `protocol/AMENDMENT_2.md` | Rule-based root-cause scoring; bootstrap and multiplicity |
+| `protocol/AMENDMENT_3.md` | Non-LLM baselines |
+| `protocol/AMENDMENT_4.md` | Single rater (written after the rating) |
+| `protocol/REGISTRATION_LOG.txt` | The registration commits, with full hashes and times |
+
+**Provenance.**
+- The commits were made in a private working repository that also holds unrelated drafts. That repository is available to editors on request.
+- This study began as a revision of a manuscript previously submitted to *Future Generation Computer Systems*. The protocol documents therefore say "FGCS v2", and in the working repository they were named `FGCS_V2_PROTOCOL.md` and `FGCS_V2_AMENDMENT_1.md` to `FGCS_V2_AMENDMENT_4.md`.
+- Here they are renamed only. Their text is exactly as committed, because changing a registered document after the fact would defeat its purpose.
+
+The agent class in `src/agents/` is the only agent the system has. The manuscript previously submitted to FGCS described further agent roles as architectural placeholders; they were never implemented. The rest of the pipeline (collectors, context builder, fault injection) is in the source repository and is not needed to rerun the analyses here.
 
 ---
 
