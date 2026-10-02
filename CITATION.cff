@@ -11,5 +11,5 @@ authors:
     affiliation: "Department of Computer Science, The University of Lahore, Sargodha Campus"
 version: "1.0.0"
 date-released: "2026-10-02"
-license: ["MIT", "CC-BY-4.0"]
+license: MIT
 repository-code: "https://github.com/saadhussain07/llm-aiops-fault-detection-rca"

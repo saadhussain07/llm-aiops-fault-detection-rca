@@ -1,0 +1,12 @@
+{
+  "title": "LLM-based fault detection and root-cause analysis for Kubernetes: code, records and protocol of a pre-registered evaluation",
+  "upload_type": "software",
+  "description": "Code, records and protocol accompanying the manuscript \"LLM-based fault detection and root-cause analysis for Kubernetes: a pre-registered evaluation of what the model contributes\". Includes the complete system (telemetry collectors, context builder, LLM agent, remediation gating, fault injection), 330 recorded monitoring cycles, the annotation-ablation and multi-model replays, non-LLM baselines, rule-based and blinded root-cause scoring, and the protocol with its four amendments. Code is MIT-licensed; data are CC BY 4.0 (see LICENSE and LICENSE-DATA).",
+  "creators": [
+    {"name": "Hussain, Muhammad Saad", "affiliation": "The University of Lahore, Sargodha Campus", "orcid": "0009-0003-9132-9986"},
+    {"name": "Farrukh, Alishba", "affiliation": "The University of Lahore, Sargodha Campus"}
+  ],
+  "license": "MIT",
+  "keywords": ["AIOps", "fault detection", "root cause analysis", "large language models", "Kubernetes", "pre-registration"],
+  "version": "1.0.0"
+}
